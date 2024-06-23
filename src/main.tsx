@@ -12,6 +12,8 @@ import { store } from "./features/store";
 
 import { theme } from "./assets/theme";
 
+localStorage.setItem("language", "EN");
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
     <ModalsProvider>
