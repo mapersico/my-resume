@@ -55,7 +55,7 @@ const ICONS: { [key: string]: ReactElement } = {
   IconBrandSocketIo: <IconBrandSocketIo size={18} />,
 };
 
-export const Skills = () => {
+const Skills = () => {
   const skillsContent = useSelector(selectSkillsContent);
   const { data: skill } = useGetSkillsQuery();
 
@@ -92,3 +92,5 @@ export const Skills = () => {
     )
   );
 };
+
+export default Skills;

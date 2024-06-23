@@ -22,8 +22,8 @@ const appSlice = createSlice({
       state.content = action.payload.data;
       state.key = action.payload.key;
     },
-    toggleNav: (state, action) => {
-      state.navOpened = action.payload;
+    toggleNav: (state) => {
+      state.navOpened = !state.navOpened;
     },
     setContentKey: (state, action) => {
       state.key = action.payload;

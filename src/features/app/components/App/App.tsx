@@ -21,7 +21,7 @@ const App = ({ children }: PropsWithChildren) => {
   return (
     <AppShell
       style={{ overflow: "hidden" }}
-      footer={{ height: 30 }}
+      footer={{ height: { base: 45, md: 30 } }}
       header={{ height: 36 }}
       navbar={{
         breakpoint: "xs",

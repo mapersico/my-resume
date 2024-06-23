@@ -17,7 +17,7 @@ import {
   IconUserEdit,
 } from "@tabler/icons-react";
 
-import logo from "../../../../assets/logo.svg";
+import logo from "../../../../../public/logo.svg";
 import styles from "./Header.module.css";
 
 import {
@@ -27,7 +27,7 @@ import {
   toggleNav,
 } from "../../store/app.slice";
 import {
-  useGetCvByLangMutation,
+  useGetResumeByLangMutation,
   useGetLangByKeyMutation,
 } from "../../store/app.api";
 
@@ -35,7 +35,7 @@ import { ContactModal } from "../ContactModal/ContactModal";
 
 export const Header = () => {
   const [fetchLang] = useGetLangByKeyMutation();
-  const [fetchCv] = useGetCvByLangMutation();
+  const [fetchResume] = useGetResumeByLangMutation();
   const dispatch = useDispatch();
   const theme = useMantineTheme();
   const xsBreakpoint = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
@@ -86,7 +86,7 @@ export const Header = () => {
                       {header.contactLabel}
                     </Menu.Item>
                     <Menu.Divider>
-                      <Menu.Item onClick={() => fetchCv()} fz="xs">
+                      <Menu.Item onClick={() => fetchResume()} fz="xs">
                         {header.exportAction}
                       </Menu.Item>
                     </Menu.Divider>
@@ -97,7 +97,7 @@ export const Header = () => {
                   variant="transparent"
                   className={styles.tab}
                   fz="xs"
-                  onClick={() => dispatch(toggleNav(!navOpened))}
+                  onClick={() => dispatch(toggleNav())}
                 >
                   {navOpened ? (
                     <IconLayoutSidebarRightCollapseFilled size={20} />
@@ -148,7 +148,7 @@ export const Header = () => {
                   variant="transparent"
                   className={styles.tab}
                   fz="xs"
-                  onClick={() => fetchCv()}
+                  onClick={() => fetchResume()}
                 >
                   {header.exportAction}
                 </Button>

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Job } from "./Job";
 
-export const JobWrapper = () => {
+const JobWrapper = () => {
   const { jobCode } = useParams();
   const { data, refetch } = useGetJobByCodeQuery(jobCode || "");
   const contentKey = useSelector(selectContentKey);
@@ -18,3 +18,5 @@ export const JobWrapper = () => {
 
   return data && <Job data={data} />;
 };
+
+export default JobWrapper;

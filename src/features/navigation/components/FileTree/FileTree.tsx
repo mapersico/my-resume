@@ -1,4 +1,6 @@
 import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   Group,
   RenderTreeNodePayload,
@@ -16,14 +18,14 @@ import {
 } from "@tabler/icons-react";
 
 import styles from "../Navigation/Navigation.module.css";
-
-import { useNavigate } from "react-router-dom";
+import { toggleNav } from "../../../app/store/app.slice";
 
 interface FileTreeProps {
   treeData: TreeNodeData[];
 }
 
 export const FileTree: FC<FileTreeProps> = ({ treeData }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const tree = useTree();
 
@@ -112,7 +114,10 @@ export const FileTree: FC<FileTreeProps> = ({ treeData }) => {
         pb="4px"
         fz="sm"
         {...elementProps}
-        onClick={() => isSection && navigate(getLink(node.value))}
+        onClick={() => {
+          navigate(getLink(node.value));
+          dispatch(toggleNav());
+        }}
       >
         <Group w="100%" gap={5} className={styles.leaf}>
           {renderNodeIcon(

@@ -33,6 +33,13 @@ export interface IContactForm {
   submitAction: string;
 }
 
+export interface IContactBody {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 interface IFullView {
   careerTitle: string;
   freelanceTitle: string;

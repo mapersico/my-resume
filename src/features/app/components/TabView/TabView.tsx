@@ -17,7 +17,7 @@ import {
 
 import { selectNavigationContent } from "../../store/app.slice";
 
-export const TabView: FC = () => {
+const TabView: FC = () => {
   const location = useLocation();
   const navigationContent = useSelector(selectNavigationContent);
   const tabsToRender = useMemo(() => {
@@ -137,3 +137,5 @@ export const TabView: FC = () => {
     </ScrollArea>
   );
 };
+
+export default TabView;

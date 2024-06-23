@@ -14,6 +14,8 @@ import { IconEdit, IconMail, IconUser } from "@tabler/icons-react";
 import { selectContactFormContent } from "../../store/app.slice";
 import { IContactFormField } from "../../store/app.model";
 import { useForm } from "@mantine/form";
+import { useSendContactMutation } from "../../store/app.api";
+import { Loader } from "../Loader/Loader";
 
 interface ContactModalProps {
   opened: boolean;
@@ -21,6 +23,7 @@ interface ContactModalProps {
 }
 
 export const ContactModal: FC<ContactModalProps> = ({ opened, close }) => {
+  const [sendContact, { isLoading }] = useSendContactMutation();
   const contactCaption = useSelector(selectContactFormContent);
   const contactForm = useForm({
     mode: "controlled",
@@ -98,7 +101,14 @@ export const ContactModal: FC<ContactModalProps> = ({ opened, close }) => {
         onClose={close}
         title={contactCaption.title}
       >
-        <form onSubmit={contactForm.onSubmit((values) => console.log(values))}>
+        {isLoading && <Loader pos="relative" />}
+        <form
+          onSubmit={contactForm.onSubmit(async (values) => {
+            await sendContact(values);
+            contactForm.reset();
+            close();
+          })}
+        >
           <Stack gap="md">
             <SimpleGrid cols={1}>
               {renderField(contactCaption.nameInput)}
@@ -111,7 +121,11 @@ export const ContactModal: FC<ContactModalProps> = ({ opened, close }) => {
               {renderField(contactCaption.messageInput)}
             </SimpleGrid>
             <Group justify="flex-end">
-              <Button type="submit" color="var(--mantine-color-blue-9)">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                color="var(--mantine-color-blue-9)"
+              >
                 {contactCaption.submitAction}
               </Button>
             </Group>
