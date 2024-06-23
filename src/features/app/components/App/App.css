@@ -1,0 +1,23 @@
+.main {
+  --tabs-list-border-size: 0 0 1px 0;
+
+  .mantine-Tabs-list {
+    background: var(--mantine-color-dark-8);
+  }
+
+  .mantine-Tabs-tab {
+    border-color: transparent;
+    border-right: 1px solid var(--mantine-color-dark-4);
+    border-radius: 2px 2px 0px 0px;
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &[data-active="true"] {
+      border-top: 2px solid var(--mantine-primary-color-7);
+      border-bottom: transparent;
+      background: var(--mantine-color-dark-7);
+    }
+  }
+}
