@@ -7,6 +7,7 @@ import {
   Text,
   Tree,
   TreeNodeData,
+  useMantineTheme,
   useTree,
 } from "@mantine/core";
 import {
@@ -19,12 +20,17 @@ import {
 
 import styles from "../Navigation/Navigation.module.css";
 import { toggleNav } from "../../../app/store/app.slice";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface FileTreeProps {
   treeData: TreeNodeData[];
 }
 
 export const FileTree: FC<FileTreeProps> = ({ treeData }) => {
+  const theme = useMantineTheme();
+  const mobileBreakpoint = useMediaQuery(
+    `(max-width: ${theme.breakpoints.xs})`
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tree = useTree();
@@ -116,7 +122,9 @@ export const FileTree: FC<FileTreeProps> = ({ treeData }) => {
         {...elementProps}
         onClick={() => {
           navigate(getLink(node.value));
-          dispatch(toggleNav());
+          {
+            mobileBreakpoint && dispatch(toggleNav());
+          }
         }}
       >
         <Group w="100%" gap={5} className={styles.leaf}>
