@@ -4,11 +4,13 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import { Group, ScrollArea, Stack } from "@mantine/core";
+import { Box, Group, ScrollArea, Stack } from "@mantine/core";
 
 import { useGetLangByKeyMutation } from "../../store/app.api";
 
 import { Loader } from "../Loader/Loader";
+
+import bg from "../../../../assets/bg.webp";
 
 const App = lazy(() => import("./App"));
 const TabView = lazy(() => import("../TabView/TabView"));
@@ -30,9 +32,17 @@ const WithWrapper = ({ children }: PropsWithChildren) => {
       <Stack pos="relative" gap={0}>
         <TabView />
         <Suspense fallback={<Loader />}>
-          <ScrollArea h="calc(100vh - 102px)">
-            <Group gap={0}>{children}</Group>
-          </ScrollArea>
+          <Box
+            style={{
+              backgroundImage: `url(${bg})`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <ScrollArea h="calc(100vh - 102px)">
+              <Group gap={0}>{children}</Group>
+            </ScrollArea>
+          </Box>
         </Suspense>
       </Stack>
     </App>
