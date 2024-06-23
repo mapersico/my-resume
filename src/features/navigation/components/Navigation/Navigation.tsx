@@ -49,7 +49,7 @@ export const Navigation = () => {
                 </Tabs.Tab>
                 {!xsBreakpoint && (
                   <Tabs.Tab
-                    onClick={() => dispatch(toggleNav(!navOpened))}
+                    onClick={() => dispatch(toggleNav())}
                     w={50}
                     className={styles.tab}
                     value="toggleMenu"

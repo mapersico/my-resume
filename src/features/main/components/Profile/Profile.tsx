@@ -37,7 +37,7 @@ interface ProfileProps {
   height?: string;
 }
 
-export const Profile: FC<ProfileProps> = ({ height }) => {
+const Profile: FC<ProfileProps> = ({ height }) => {
   const { data: profileData, refetch } = useGetProfileQuery();
   const contentKey = useSelector(selectContentKey);
   const theme = useMantineTheme();
@@ -153,3 +153,5 @@ export const Profile: FC<ProfileProps> = ({ height }) => {
     )
   );
 };
+
+export default Profile;

@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect } from "react";
+import { FC, PropsWithChildren, Suspense, lazy, useEffect } from "react";
 import {
   Navigate,
   RouterProvider,
@@ -6,26 +6,34 @@ import {
 } from "react-router-dom";
 import { Group, ScrollArea, Stack } from "@mantine/core";
 
-import App from "./App";
+import { useGetLangByKeyMutation } from "../../store/app.api";
 
-import { TabView } from "../TabView/TabView";
-import { Profile } from "../../../main/components/Profile/Profile";
-import { Skills } from "../../../main/components/Skills/Skills";
-import { Fullview } from "../../../main/components/Fullview/Fullview";
-import { ApplicationWrapper } from "../../../main/components/Application/ApplicationWrapper";
-import { JobWrapper } from "../../../main/components/Job/JobWrapper";
+import { Loader } from "../Loader/Loader";
 
-import { store } from "../../../store";
-import { appApi } from "../../store/app.api";
+const App = lazy(() => import("./App"));
+const TabView = lazy(() => import("../TabView/TabView"));
+const Profile = lazy(() => import("../../../main/components/Profile/Profile"));
+const Skills = lazy(() => import("../../../main/components/Skills/Skills"));
+const Fullview = lazy(
+  () => import("../../../main/components/Fullview/Fullview")
+);
+const ApplicationWrapper = lazy(
+  () => import("../../../main/components/Application/ApplicationWrapper")
+);
+const JobWrapper = lazy(
+  () => import("../../../main/components/Job/JobWrapper")
+);
 
 const WithWrapper = ({ children }: PropsWithChildren) => {
   return (
     <App>
-      <Stack gap={0}>
+      <Stack pos="relative" gap={0}>
         <TabView />
-        <ScrollArea h="calc(100vh - 102px)">
-          <Group gap={0}>{children}</Group>
-        </ScrollArea>
+        <Suspense fallback={<Loader />}>
+          <ScrollArea h="calc(100vh - 102px)">
+            <Group gap={0}>{children}</Group>
+          </ScrollArea>
+        </Suspense>
       </Stack>
     </App>
   );
@@ -83,13 +91,11 @@ const router = createBrowserRouter([
 ]);
 
 export const AppRouter: FC = () => {
+  const [fetch] = useGetLangByKeyMutation();
+
   useEffect(() => {
-    store.dispatch(
-      appApi.endpoints.getLangByKey.initiate(
-        localStorage.getItem("language") || "en"
-      )
-    );
-  }, [store.dispatch]);
+    fetch(localStorage.getItem("language") || "EN");
+  }, [fetch]);
 
   return <RouterProvider router={router} />;
 };

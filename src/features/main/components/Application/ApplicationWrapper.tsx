@@ -6,7 +6,7 @@ import { useGetAppByCodeQuery } from "../../store/main.api";
 import { selectContentKey } from "../../../app/store/app.slice";
 import { Application } from "./Application";
 
-export const ApplicationWrapper = () => {
+const ApplicationWrapper = () => {
   const { appCode } = useParams();
   const { data: applicationData, refetch } = useGetAppByCodeQuery(
     appCode || ""
@@ -21,3 +21,5 @@ export const ApplicationWrapper = () => {
 
   return applicationData && <Application data={applicationData} />;
 };
+
+export default ApplicationWrapper;

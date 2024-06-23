@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Container, Flex, Title } from "@mantine/core";
 
-import { Profile } from "../Profile/Profile";
-import { Skills } from "../Skills/Skills";
+import Profile from "../Profile/Profile";
+import Skills from "../Skills/Skills";
 import { Application } from "../Application/Application";
 
 import { useGetAllAppsQuery, useGetAllJobsQuery } from "../../store/main.api";
@@ -13,7 +13,7 @@ import {
   selectFullviewContent,
 } from "../../../app/store/app.slice";
 
-export const Fullview = () => {
+const Fullview = () => {
   const { data: jobs, refetch: refetchJobs } = useGetAllJobsQuery();
   const { data: applications, refetch: refetchApps } = useGetAllAppsQuery();
   const contentKey = useSelector(selectContentKey);
@@ -43,3 +43,5 @@ export const Fullview = () => {
     </Flex>
   );
 };
+
+export default Fullview;

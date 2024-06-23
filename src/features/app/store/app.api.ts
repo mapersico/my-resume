@@ -1,6 +1,17 @@
 import { baseApi } from "../../store";
-import { IGetLangByKeyQuery } from "./app.model";
+import { IContactBody, IGetLangByKeyQuery } from "./app.model";
 import { setContent } from "./app.slice";
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
 
 export const appApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -21,28 +32,40 @@ export const appApi = baseApi.injectEndpoints({
         localStorage.setItem("language", languageContent.data.key);
       },
     }),
-    getCvByLang: build.mutation<ArrayBuffer, void>({
+    getResumeByLang: build.mutation<ArrayBuffer, void>({
       query: () => ({
         credentials: "include",
         method: "GET",
-        url: `applications/get-cv?lang=${localStorage.getItem("language")}`,
+        url: `file/resume?lang=${localStorage.getItem("language")}`,
         responseHandler: async (response) => {
           return response.blob();
         },
       }),
       onQueryStarted: async (_arg, { queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-        const url = window.URL.createObjectURL(data as never);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `Marco Pérsico CV ${localStorage.getItem("language")}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
+        try {
+          const { data } = await queryFulfilled;
+          const filename = `Marco Pérsico CV ${localStorage.getItem(
+            "language"
+          )}.pdf`;
+          downloadBlob(data as unknown as Blob, filename);
+        } catch (error) {
+          console.error("Error downloading the file", error);
+        }
       },
+    }),
+    sendContact: build.mutation<void, IContactBody>({
+      query: (body) => ({
+        credentials: "include",
+        method: "POST",
+        url: "contact/send-email",
+        body: body,
+      }),
     }),
   }),
 });
 
-export const { useGetLangByKeyMutation, useGetCvByLangMutation } = appApi;
+export const {
+  useGetLangByKeyMutation,
+  useGetResumeByLangMutation,
+  useSendContactMutation,
+} = appApi;
