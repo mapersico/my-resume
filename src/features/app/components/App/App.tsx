@@ -9,8 +9,6 @@ import { Footer } from "../Footer/Footer";
 
 import { selectNavState } from "../../store/app.slice";
 
-import BG from "../../../../assets/bg.webp";
-
 import "./App.css";
 
 const App = ({ children }: PropsWithChildren) => {
@@ -39,13 +37,7 @@ const App = ({ children }: PropsWithChildren) => {
       >
         <Navigation />
       </AppShell.Navbar>
-      <AppShell.Main
-        style={{
-          backgroundImage: `url(${BG})`,
-        }}
-        w="100%"
-        bg="var(--mantine-color-dark-7)"
-      >
+      <AppShell.Main w="100%" bg="var(--mantine-color-dark-7)">
         {children}
       </AppShell.Main>
       <AppShell.Footer bg="var(--mantine-color-dark-8)">
