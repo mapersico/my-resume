@@ -24,17 +24,14 @@ import {
   selectContentKey,
   selectHeaderContent,
   selectNavState,
+  setContentKey,
   toggleNav,
 } from "../../store/app.slice";
-import {
-  useGetResumeByLangMutation,
-  useGetLangByKeyMutation,
-} from "../../store/app.api";
+import { useGetResumeByLangMutation } from "../../store/app.api";
 
 import { ContactModal } from "../ContactModal/ContactModal";
 
 export const Header = () => {
-  const [fetchLang] = useGetLangByKeyMutation();
   const [fetchResume] = useGetResumeByLangMutation();
   const dispatch = useDispatch();
   const theme = useMantineTheme();
@@ -72,7 +69,8 @@ export const Header = () => {
                     {header.languages.map((language) => (
                       <Menu.Item
                         onClick={() =>
-                          key !== language.key && fetchLang(language.key)
+                          key !== language.key &&
+                          dispatch(setContentKey(language.key))
                         }
                         fz="xs"
                         w={150}
@@ -123,7 +121,8 @@ export const Header = () => {
                     {header.languages.map((language) => (
                       <Menu.Item
                         onClick={() =>
-                          key !== language.key && fetchLang(language.key)
+                          key !== language.key &&
+                          dispatch(setContentKey(language.key))
                         }
                         fz="xs"
                         w={150}

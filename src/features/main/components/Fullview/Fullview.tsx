@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Container, Flex, Title } from "@mantine/core";
 
@@ -17,16 +17,20 @@ const Fullview = () => {
   const { data: jobs, refetch: refetchJobs } = useGetAllJobsQuery();
   const { data: applications, refetch: refetchApps } = useGetAllAppsQuery();
   const contentKey = useSelector(selectContentKey);
+  const [currentLang, setCurrentLang] = useState(contentKey);
   const fullviewStaticContent = useSelector(selectFullviewContent);
 
   useEffect(() => {
-    refetchJobs();
-    refetchApps();
+    if (contentKey !== currentLang) {
+      refetchJobs();
+      refetchApps();
+    }
+    setCurrentLang(contentKey);
   }, [contentKey]);
 
   return (
     <Flex w="100%" justify="center" direction="column">
-      <Profile height="60vh" />
+      <Profile />
       <Skills />
       <Container>
         <Title>{fullviewStaticContent?.careerTitle}</Title>

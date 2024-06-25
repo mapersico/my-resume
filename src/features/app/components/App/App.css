@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 .main {
   --tabs-list-border-size: 0 0 1px 0;
 

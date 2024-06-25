@@ -15,7 +15,7 @@ function downloadBlob(blob: Blob, filename: string) {
 
 export const appApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getLangByKey: build.mutation<IGetLangByKeyQuery, string>({
+    getLangByKey: build.query<IGetLangByKeyQuery, string>({
       query: (key) => ({
         credentials: "include",
         method: "GET",
@@ -36,7 +36,7 @@ export const appApi = baseApi.injectEndpoints({
       query: () => ({
         credentials: "include",
         method: "GET",
-        url: `file/resume?lang=${localStorage.getItem("language")}`,
+        url: "file/resume",
         responseHandler: async (response) => {
           return response.blob();
         },
@@ -65,7 +65,7 @@ export const appApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetLangByKeyMutation,
+  useGetLangByKeyQuery,
   useGetResumeByLangMutation,
   useSendContactMutation,
 } = appApi;

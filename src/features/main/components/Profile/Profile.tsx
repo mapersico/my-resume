@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import {
   Avatar,
   Box,
-  Flex,
+  Container,
   Group,
   SimpleGrid,
   Stack,
@@ -21,10 +21,10 @@ import {
 
 import ResumeImage from "../../../../assets/resume-profile.webp";
 
-import { processString } from "../../../utils";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import { useGetProfileQuery } from "../../store/main.api";
 import { selectContentKey } from "../../../app/store/app.slice";
+import MarkdownRenderer from "../../../app/components/MarkdownRenderer/MarkdownRenderer";
 
 const CONTACT_ICONS = {
   IconPhone: <IconPhone />,
@@ -33,11 +33,7 @@ const CONTACT_ICONS = {
   IconCalendar: <IconCalendar />,
 };
 
-interface ProfileProps {
-  height?: string;
-}
-
-const Profile: FC<ProfileProps> = ({ height }) => {
+const Profile: FC = () => {
   const { data: profileData, refetch } = useGetProfileQuery();
   const contentKey = useSelector(selectContentKey);
   const theme = useMantineTheme();
@@ -46,25 +42,16 @@ const Profile: FC<ProfileProps> = ({ height }) => {
   );
 
   useEffect(() => {
-    if (profileData?.lang !== localStorage.getItem("language")) {
-      refetch();
-    }
+    if (contentKey !== profileData?.lang) refetch();
   }, [contentKey]);
 
   return (
     profileData && (
-      <Flex
-        align="center"
-        justify="center"
-        w="100%"
-        py="lg"
-        px="md"
-        h={{ base: "auto", md: height || "calc(100vh - 102px)" }}
-      >
-        <Stack>
+      <Container py="xl">
+        <Stack pt="6%" h="90%" justify="center">
           <Group
             justify={mobileBreakpoint ? "center" : "space-between"}
-            gap={25}
+            gap="xl"
           >
             <Avatar
               style={{ border: "2px solid var(--mantine-color-blue-8)" }}
@@ -91,7 +78,7 @@ const Profile: FC<ProfileProps> = ({ height }) => {
                 </Text>
               </Title>
               <Text c="var(--mantine-color-dark-2)">
-                {processString(profileData.description)}
+                <MarkdownRenderer markdownText={profileData.description} />
               </Text>
               <Title order={4}>{profileData.contactTitle}</Title>
               <SimpleGrid
@@ -149,7 +136,7 @@ const Profile: FC<ProfileProps> = ({ height }) => {
             </SimpleGrid>
           </Box>
         </Stack>
-      </Flex>
+      </Container>
     )
   );
 };

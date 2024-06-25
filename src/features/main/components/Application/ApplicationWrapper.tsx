@@ -4,22 +4,21 @@ import { useSelector } from "react-redux";
 
 import { useGetAppByCodeQuery } from "../../store/main.api";
 import { selectContentKey } from "../../../app/store/app.slice";
+
 import { Application } from "./Application";
 
 const ApplicationWrapper = () => {
   const { appCode } = useParams();
-  const { data: applicationData, refetch } = useGetAppByCodeQuery(
-    appCode || ""
-  );
+  const { data, refetch, isFetching } = useGetAppByCodeQuery(appCode || "");
   const contentKey = useSelector(selectContentKey);
 
   useEffect(() => {
-    if (applicationData?.lang !== contentKey) {
+    if (data?.lang !== contentKey) {
       refetch();
     }
   }, [contentKey, appCode]);
 
-  return applicationData && <Application data={applicationData} />;
+  return data && !isFetching && <Application data={data} />;
 };
 
 export default ApplicationWrapper;

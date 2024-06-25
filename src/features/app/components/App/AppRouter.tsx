@@ -6,11 +6,13 @@ import {
 } from "react-router-dom";
 import { Box, Group, ScrollArea, Stack } from "@mantine/core";
 
-import { useGetLangByKeyMutation } from "../../store/app.api";
+import { useGetLangByKeyQuery } from "../../store/app.api";
 
 import { Loader } from "../Loader/Loader";
 
 import bg from "../../../../assets/bg.webp";
+import { useSelector } from "react-redux";
+import { selectContentKey, selectGlobalLoading } from "../../store/app.slice";
 
 const App = lazy(() => import("./App"));
 const TabView = lazy(() => import("../TabView/TabView"));
@@ -27,10 +29,12 @@ const JobWrapper = lazy(
 );
 
 const WithWrapper = ({ children }: PropsWithChildren) => {
+  const loading = useSelector(selectGlobalLoading);
   return (
     <App>
       <Stack pos="relative" gap={0}>
         <TabView />
+        {loading && <Loader />}
         <Suspense fallback={<Loader />}>
           <Box
             style={{
@@ -101,11 +105,16 @@ const router = createBrowserRouter([
 ]);
 
 export const AppRouter: FC = () => {
-  const [fetch] = useGetLangByKeyMutation();
+  const contentKey = useSelector(selectContentKey);
+  const { data, refetch } = useGetLangByKeyQuery(contentKey);
 
   useEffect(() => {
-    fetch(localStorage.getItem("language") || "EN");
-  }, [fetch]);
+    refetch();
+  }, [contentKey]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      {data && <RouterProvider router={router} />}
+    </Suspense>
+  );
 };

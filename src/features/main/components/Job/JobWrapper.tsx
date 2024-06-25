@@ -1,13 +1,15 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+
 import { useGetJobByCodeQuery } from "../../store/main.api";
 import { selectContentKey } from "../../../app/store/app.slice";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+
 import { Job } from "./Job";
 
 const JobWrapper = () => {
   const { jobCode } = useParams();
-  const { data, refetch } = useGetJobByCodeQuery(jobCode || "");
+  const { data, refetch, isFetching } = useGetJobByCodeQuery(jobCode || "");
   const contentKey = useSelector(selectContentKey);
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const JobWrapper = () => {
     }
   }, [contentKey, jobCode]);
 
-  return data && <Job data={data} />;
+  return data && !isFetching && <Job data={data} />;
 };
 
 export default JobWrapper;
