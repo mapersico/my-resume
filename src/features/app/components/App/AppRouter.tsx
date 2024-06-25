@@ -44,7 +44,9 @@ const WithWrapper = ({ children }: PropsWithChildren) => {
             }}
           >
             <ScrollArea h="calc(100vh - 102px)">
-              <Group gap={0}>{children}</Group>
+              <Group py="xl" gap={0}>
+                {children}
+              </Group>
             </ScrollArea>
           </Box>
         </Suspense>
