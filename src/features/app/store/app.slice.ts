@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ILanguage } from "./app.model";
 import { RootState } from "../../store";
+import { QueryStatus } from "@reduxjs/toolkit/query";
 
 interface InitialState {
   content: ILanguage | null;
@@ -50,5 +51,16 @@ export const selectFullviewContent = (state: RootState) =>
 
 export const selectContentKey = (state: RootState) => state.appReducer.key;
 export const selectNavState = (state: RootState) => state.appReducer.navOpened;
+
+export const selectGlobalLoading = (state: RootState) => {
+  const isLoading =
+    Object.values(state.api.queries).some(
+      (query) => query?.status === QueryStatus.pending
+    ) ||
+    Object.values(state.api.mutations).some(
+      (mutation) => mutation?.status === QueryStatus.pending
+    );
+  return isLoading;
+};
 
 export default appSlice.reducer;

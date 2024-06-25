@@ -11,15 +11,18 @@ import { AppRouter } from "./features/app/components/App/AppRouter";
 import { store } from "./features/store";
 
 import { theme } from "./assets/theme";
+import React from "react";
 
 localStorage.setItem("language", localStorage.getItem("language") || "EN");
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <MantineProvider theme={theme} defaultColorScheme="dark">
-    <ModalsProvider>
-      <Provider store={store}>
-        <AppRouter />
-      </Provider>
-    </ModalsProvider>
-  </MantineProvider>
+  <React.StrictMode>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <ModalsProvider>
+        <Provider store={store}>
+          <AppRouter />
+        </Provider>
+      </ModalsProvider>
+    </MantineProvider>
+  </React.StrictMode>
 );
